@@ -6,4 +6,4 @@ function EmailView(props) {
         </div>
     </a>
   );
-}
+};
