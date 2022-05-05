@@ -39,7 +39,7 @@ function load_mailbox(mailbox) {
   fetch(`emails/${mailbox}`)
   .then(response => response.json())
   .then(emails => {
-    emailsView.append()
+    console.log(emails);
   });
 
   emailsView.style.display = 'block';
