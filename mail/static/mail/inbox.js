@@ -5,8 +5,6 @@ document.addEventListener('DOMContentLoaded', function() {
   document.querySelector('#sent').addEventListener('click', () => load_mailbox('sent'));
   document.querySelector('#archived').addEventListener('click', () => load_mailbox('archive'));
   document.querySelector('#compose').addEventListener('click', compose_email);
-
-  
   document.querySelector('#compose-form').onsubmit = mail_submit
 
   // By default, load the inbox
@@ -27,12 +25,22 @@ function compose_email() {
 
 function load_mailbox(mailbox) {
   
-  // Show the mailbox and hide other views
-  document.querySelector('#emails-view').style.display = 'block';
+  // Hide other views
   document.querySelector('#compose-view').style.display = 'none';
 
   // Show the mailbox name
   document.querySelector('#emails-view').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
+
+  // Fetch the mails from the appropriate mailbox
+  let emailsView = document.querySelector('#emails-view');
+  
+  fetch(`emails/${mailbox}`)
+  .then(response => response.json())
+  .then(emails => {
+    emailsView.append()
+  });
+
+  emailsView.style.display = 'block';
 }
 
 function mail_submit(event) {
