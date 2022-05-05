@@ -40,6 +40,14 @@ function load_mailbox(mailbox) {
   .then(response => response.json())
   .then(emails => {
     console.log(emails);
+    let emails_view = document.querySelector('#emails-view');
+    emails.forEach(email => {
+      console.log(emails)
+      email_div = document.createElement('div');
+      email_div.classList.add('email-list')
+      email_div.innerHTML = `${email.sender}: ${email.subject}`;
+      emails_view.append(email_div);
+    });
   });
 
   emailsView.style.display = 'block';
