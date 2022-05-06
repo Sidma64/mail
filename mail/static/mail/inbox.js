@@ -43,10 +43,28 @@ function load_mailbox(mailbox) {
     let emails_view = document.querySelector('#emails-view');
     emails.forEach(email => {
       console.log(emails)
-      email_div = document.createElement('div');
-      email_div.classList.add('email-list')
+
+      let email_link = document.createElement("a");
+      email_link.setAttribute("href", `emails/${email.id}`);
+      
+      let email_div = document.createElement('div');
+      email_div.classList.add('email-list');
+      email_div.setAttribute("class", "rounded border p-1");
+      email_link.append(email_div);
+
+      let email_sender = document.createElement('div');
+      email_sender.classList.add('email-sender');
+      email_sender.innerHTML = `${email.sender}:`;
+      email_div.append(email_sender);
+
+      let email_subject = document.createElement('div');
+      email_subject.classList.add('email-subject');
+      email_subject.innerHTML = `${email.subject}`;
+      email_div.append(email_subject);
+
+      
       email_div.innerHTML = `${email.sender}: ${email.subject}`;
-      emails_view.append(email_div);
+      emails_view.append(email_link);
     });
   });
 
