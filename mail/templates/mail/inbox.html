@@ -34,6 +34,26 @@
             <input type="submit" class="btn btn-primary"/>
         </form>
     </div>
+
+    <div id="mail-view">
+        <p>
+            <b>From: </b><a id="mail-sender"></a>
+        </p>
+        <p>
+            <b>To: </b><a id="mail-recipients"></a>
+        </p>
+        <p>
+            <b>Subject: </b><a id="mail-subject"></a>
+        </p>
+        <p>
+            <b>Timestamp: </b><a id="mail-timestamp"></a>
+        </p>
+        <button>Reply</button>
+        <hr>
+        <div>
+            <a id="mail-body"></a>
+        </div>
+    </div>
 {% endblock %}
 
 {% block script %}

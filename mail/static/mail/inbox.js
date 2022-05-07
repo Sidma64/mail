@@ -11,6 +11,14 @@ document.addEventListener('DOMContentLoaded', function() {
   load_mailbox('inbox');
 });
 
+function hide_all() {
+  document.querySelector('#emails-view').style.display = 'none';
+  document.querySelector("#submit-error").style.display = 'none';
+  document.querySelector('#compose-view').style.display = 'none';
+  document.querySelector("#mail-view").style.display = 'none';
+
+}
+
 function compose_email() {
 
   // Show compose view and hide other views
@@ -29,6 +37,7 @@ function load_mailbox(mailbox) {
   
   // Hide other views
   document.querySelector('#compose-view').style.display = 'none';
+  document.querySelector("#mail-view").style.display = "none";
 
   // Show the mailbox name
   document.querySelector('#emails-view').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
@@ -42,14 +51,13 @@ function load_mailbox(mailbox) {
     console.log(emails);
     let emails_view = document.querySelector('#emails-view');
     emails.forEach(email => {
-      console.log(emails)
-
+      // Create the HTML for the mails on the mailbox
       let email_link = document.createElement("a");
-      email_link.setAttribute("href", `emails/${email.id}`);
+      email_link.setAttribute("onclick", `load_mail(${email.id})`);
       
       let email_div = document.createElement('div');
       email_div.classList.add('email-list');
-      email_div.setAttribute("class", "rounded border p-1");
+      email_div.setAttribute("class", "rounded border p-1 m-2");
       email_link.append(email_div);
 
       let email_sender = document.createElement('div');
@@ -62,14 +70,30 @@ function load_mailbox(mailbox) {
       email_subject.innerHTML = `${email.subject}`;
       email_div.append(email_subject);
 
-      
       email_div.innerHTML = `${email.sender}: ${email.subject}`;
       emails_view.append(email_link);
     });
   });
 
   emailsView.style.display = 'block';
+
 };
+
+function load_mail(id) {
+  hide_all()
+  fetch(`emails/${id}`)
+  .then(response => response.json())
+  .then(mail => {
+    console.log(mail);
+    document.querySelector("#mail-sender").innerHTML = mail.sender;
+    document.querySelector("#mail-recipients").innerHTML = mail.recipients.join(', ');
+    document.querySelector("#mail-subject").innerHTML = mail.subject;
+    document.querySelector("#mail-timestamp").innerHTML = mail.timestamp;
+    document.querySelector("#mail-body").innerHTML = mail.body;
+  });
+
+  document.querySelector("#mail-view").style.display = "block";
+}
 
 function mail_submit(event) {
   event.preventDefault();
