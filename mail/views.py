@@ -108,6 +108,9 @@ def email(request, email_id):
 
     # Return email contents
     if request.method == "GET":
+        if request.user in email.recipients.all():
+            email.read = True
+            email.save()
         return JsonResponse(email.serialize())
 
     # Update whether email is read or should be archived

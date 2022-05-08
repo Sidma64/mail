@@ -95,7 +95,6 @@ function load_mail(id) {
     document.querySelector("#mail-reply-button").addEventListener('click', compose_email);
     document.querySelector("#mail-reply-button").setAttribute('data-recipient', `${mail.sender}`);
   });
-
   document.querySelector("#mail-view").style.display = "block";
 }
 
@@ -126,3 +125,21 @@ function mail_submit(event) {
     }
   })
 };
+
+function change_mail_to_read(id) {
+  fetch('/emails/100', {
+    method: 'PUT',
+    body: JSON.stringify({
+        read: true
+    })
+  })
+}
+
+function archive_mail(id) {
+  fetch('/emails/100', {
+    method: 'PUT',
+    body: JSON.stringify({
+        archived: true
+    })
+  })
+}
