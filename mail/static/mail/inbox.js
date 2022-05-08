@@ -19,7 +19,7 @@ function hide_all() {
 
 }
 
-function compose_email(recipient = "") {
+function compose_email(event) {
 
   // Show compose view and hide other views
   hide_all()
@@ -27,7 +27,12 @@ function compose_email(recipient = "") {
   
 
   // Clear out composition fields
-  document.querySelector('#compose-recipients').value = recipient;
+  if (event.target.dataset.recipient) {
+    document.querySelector('#compose-recipients').value = event.target.dataset.recipient;
+  }
+  else {
+    document.querySelector('#compose-recipients').value = '';
+  }
   document.querySelector('#compose-subject').value = '';
   document.querySelector('#compose-body').value = '';
 };
@@ -46,7 +51,6 @@ function load_mailbox(mailbox) {
   fetch(`emails/${mailbox}`)
   .then(response => response.json())
   .then(emails => {
-    console.log(emails);
     let emails_view = document.querySelector('#emails-view');
     emails.forEach(email => {
       // Create the HTML for the mails on the mailbox
@@ -88,7 +92,8 @@ function load_mail(id) {
     document.querySelector("#mail-subject").innerHTML = mail.subject;
     document.querySelector("#mail-timestamp").innerHTML = mail.timestamp;
     document.querySelector("#mail-body").innerHTML = mail.body;
-    document.querySelector("#mail-reply-button").setAttribute('onclick', `compose_email('${mail.sender}')`)
+    document.querySelector("#mail-reply-button").addEventListener('click', compose_email);
+    document.querySelector("#mail-reply-button").setAttribute('data-recipient', `${mail.sender}`);
   });
 
   document.querySelector("#mail-view").style.display = "block";
