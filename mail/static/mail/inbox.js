@@ -92,8 +92,12 @@ function load_mail(id) {
     document.querySelector("#mail-subject").innerHTML = mail.subject;
     document.querySelector("#mail-timestamp").innerHTML = mail.timestamp;
     document.querySelector("#mail-body").innerHTML = mail.body;
+
     document.querySelector("#mail-reply-button").addEventListener('click', compose_email);
     document.querySelector("#mail-reply-button").setAttribute('data-recipient', `${mail.sender}`);
+
+    document.querySelector("#mail-archive-button").addEventListener('click', archive_mail);
+    document.querySelector("#mail-archive-button").setAttribute('data-id', `${mail.id}`);
   });
   document.querySelector("#mail-view").style.display = "block";
 }
@@ -126,20 +130,13 @@ function mail_submit(event) {
   })
 };
 
-function change_mail_to_read(id) {
-  fetch('/emails/100', {
-    method: 'PUT',
-    body: JSON.stringify({
-        read: true
-    })
-  })
-}
-
-function archive_mail(id) {
-  fetch('/emails/100', {
+function archive_mail(event) {
+  id = event.target.dataset.id
+  fetch(`/emails/${id}`, {
     method: 'PUT',
     body: JSON.stringify({
         archived: true
     })
   })
+  load_mailbox('archive')
 }
